@@ -1,0 +1,28 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="ValidateSwitchPagesAction" type="TestNG" editBeforeRun="true" nameIsGenerated="true">
+    <module name="09-Bank Guru Project" />
+    <useClassPathOnly />
+    <extension name="coverage" track_test_folders="true" runner="jacoco">
+      <pattern>
+        <option name="PATTERN" value="com.bankguru.login.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <option name="SUITE_NAME" value="" />
+    <option name="PACKAGE_NAME" value="com.bankguru.login" />
+    <option name="MAIN_CLASS_NAME" value="com.bankguru.login.ValidateSwitchPagesAction" />
+    <option name="GROUP_NAME" value="" />
+    <option name="TEST_OBJECT" value="CLASS" />
+    <option name="PARAMETERS" value="" />
+    <option name="OUTPUT_DIRECTORY" value="" />
+    <option name="TEST_SEARCH_SCOPE">
+      <value defaultName="moduleWithDependencies" />
+    </option>
+    <option name="PROPERTIES_FILE" value="" />
+    <properties />
+    <listeners />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

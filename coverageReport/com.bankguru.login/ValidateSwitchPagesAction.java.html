@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ValidateSwitchPagesAction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com_bankguru_ylethingoc$ValidateSwitchPagesAction.exec</a> &gt; <a href="index.source.html" class="el_package">com.bankguru.login</a> &gt; <span class="el_source">ValidateSwitchPagesAction.java</span></div><h1>ValidateSwitchPagesAction.java</h1><pre class="source lang-java linenums">package com.bankguru.login;
+
+import commons.GlobalConstants;
+import commons.PageGeneratorManager;
+import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+import pageObjects.*;
+
+import java.util.concurrent.TimeUnit;
+
+<span class="fc" id="L17">public class ValidateSwitchPagesAction {</span>
+    WebDriver driver;
+    LoginPageObject loginPage;
+    HomePageObject homePage;
+    NewCustomerPageObject newCustomerPage;
+    NewAccountPageObject newAccountPage;
+    WithdrawalPageObject withdrawalPage;
+    DepositPageObject depositPage;
+
+
+    @BeforeClass
+    public void beforeClass() {
+<span class="fc" id="L29">        WebDriverManager.edgedriver().setup();</span>
+<span class="fc" id="L30">        driver = new EdgeDriver();</span>
+<span class="fc" id="L31">        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);</span>
+<span class="fc" id="L32">        loginPage = PageGeneratorManager.getLoginPage(driver);</span>
+<span class="fc" id="L33">    }</span>
+
+    @BeforeMethod
+    public void beforeMethod() {
+<span class="fc" id="L37">        driver.get(GlobalConstants.SITE_URL);</span>
+<span class="fc" id="L38">    }</span>
+
+    @Test (enabled = true)
+    public void switchPagesAction() {
+<span class="fc" id="L42">        loginPage.inputToUserIDTextbox(GlobalConstants.USER_LOGIN,&quot;uid&quot;);</span>
+<span class="fc" id="L43">        loginPage.inputToPasswordTextbox(GlobalConstants.PASSWORD_LOGIN,&quot;password&quot;);</span>
+<span class="fc" id="L44">        homePage = loginPage.clickToLoginButton(&quot;btnLogin&quot;);</span>
+<span class="fc" id="L45">        Assert.assertTrue(homePage.isWelcomeMessageDisplay());</span>
+<span class="fc" id="L46">        Assert.assertTrue(homePage.isUserIDDisplay(GlobalConstants.USER_LOGIN));</span>
+<span class="fc" id="L47">        newCustomerPage = homePage.clickToNewCustomerTextArea();</span>
+<span class="fc" id="L48">        Assert.assertTrue(newCustomerPage.isNewCustomerHeaderDisplay());</span>
+<span class="fc" id="L49">        newAccountPage = newCustomerPage.clickToNewAccountTextArea();</span>
+<span class="fc" id="L50">        Assert.assertTrue(newAccountPage.isNewAccountHeaderPageDisplay());</span>
+<span class="fc" id="L51">        withdrawalPage = newAccountPage.clickToWithdrawalTextArea();</span>
+<span class="fc" id="L52">        Assert.assertTrue(withdrawalPage.isWithdrawalHeaderPageDisplay());</span>
+<span class="fc" id="L53">        depositPage = withdrawalPage.clickToDepositTextArea();</span>
+<span class="fc" id="L54">        Assert.assertTrue(depositPage.isDepositHeaderPageDisplay());</span>
+<span class="fc" id="L55">        newCustomerPage = depositPage.clickToNewCustomerTextArea();</span>
+<span class="fc" id="L56">        newCustomerPage.isNewCustomerHeaderDisplay();</span>
+<span class="fc" id="L57">    }</span>
+
+    @Test
+    public void switchByHandleDynamicPage() {
+<span class="fc" id="L61">        loginPage.inputToUserIDTextbox(GlobalConstants.USER_LOGIN,&quot;uid&quot;);</span>
+<span class="fc" id="L62">        loginPage.inputToPasswordTextbox(GlobalConstants.PASSWORD_LOGIN,&quot;password&quot;);</span>
+<span class="fc" id="L63">        homePage = loginPage.clickToLoginButton(&quot;btnLogin&quot;);</span>
+<span class="fc" id="L64">        Assert.assertTrue(homePage.isWelcomeMessageDisplay());</span>
+<span class="fc" id="L65">        Assert.assertTrue(homePage.isUserIDDisplay(GlobalConstants.USER_LOGIN));</span>
+
+<span class="fc" id="L67">        newCustomerPage = (NewCustomerPageObject) homePage.clickToDynamicPageMenu(driver, &quot;New Customer&quot;);</span>
+<span class="fc" id="L68">        Assert.assertTrue(newCustomerPage.isNewCustomerHeaderDisplay());</span>
+
+<span class="fc" id="L70">        newAccountPage = (NewAccountPageObject) newCustomerPage.clickToDynamicPageMenu(driver, &quot;New Account&quot;);</span>
+<span class="fc" id="L71">        Assert.assertTrue(newAccountPage.isNewAccountHeaderPageDisplay());</span>
+
+<span class="fc" id="L73">        withdrawalPage = (WithdrawalPageObject) newAccountPage.clickToDynamicPageMenu(driver, &quot;Withdrawal&quot;);</span>
+<span class="fc" id="L74">        Assert.assertTrue(withdrawalPage.isWithdrawalHeaderPageDisplay());</span>
+
+<span class="fc" id="L76">        depositPage = (DepositPageObject) withdrawalPage.clickToDynamicPageMenu(driver, &quot;Deposit&quot;);</span>
+<span class="fc" id="L77">        Assert.assertTrue(depositPage.isDepositHeaderPageDisplay());</span>
+
+<span class="fc" id="L79">        newCustomerPage = (NewCustomerPageObject) depositPage.clickToDynamicPageMenu(driver, &quot;New Customer&quot;);</span>
+<span class="fc" id="L80">        Assert.assertTrue(newCustomerPage.isNewCustomerHeaderDisplay());</span>
+<span class="fc" id="L81">    }</span>
+
+    @AfterClass
+    public void afterClass() {
+<span class="fc" id="L85">        driver.quit();</span>
+<span class="fc" id="L86">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

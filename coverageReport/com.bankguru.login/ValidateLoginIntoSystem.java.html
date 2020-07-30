@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ValidateLoginIntoSystem.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com_bankguru_ylethingoc$ValidateSwitchPagesAction.exec</a> &gt; <a href="index.source.html" class="el_package">com.bankguru.login</a> &gt; <span class="el_source">ValidateLoginIntoSystem.java</span></div><h1>ValidateLoginIntoSystem.java</h1><pre class="source lang-java linenums">package com.bankguru.login;
+
+import commons.PageGeneratorManager;
+import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+import pageObjects.HomePageObject;
+import pageObjects.LoginPageObject;
+import pageObjects.RegisterPageObject;
+
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
+
+<span class="nc" id="L18">public class ValidateLoginIntoSystem {</span>
+    WebDriver driver;
+    LoginPageObject loginPage;
+    RegisterPageObject registerPage;
+    HomePageObject homePage;
+    String loginPageURL, email;
+    String userIDInfo, passwordInfo;
+
+
+    @BeforeClass
+    public void beforeClass() {
+<span class="nc" id="L29">        WebDriverManager.edgedriver().setup();</span>
+<span class="nc" id="L30">        driver = new EdgeDriver();</span>
+<span class="nc" id="L31">        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);</span>
+<span class="nc" id="L32">        driver.manage().window().maximize();</span>
+<span class="nc" id="L33">        loginPage = PageGeneratorManager.getLoginPage(driver);</span>
+<span class="nc" id="L34">        driver.get(&quot;http://demo.guru99.com/V4/&quot;);</span>
+<span class="nc" id="L35">        email = &quot;selenium_demo&quot; + randomNumber() + &quot;@gmail.com&quot;;</span>
+<span class="nc" id="L36">    }</span>
+
+    @Test
+    public void TC01_RegisterIntoSystem() {
+<span class="nc" id="L40">        Assert.assertTrue(loginPage.isLoginFromDisplay(&quot;btnLogin&quot;));</span>
+<span class="nc" id="L41">        loginPageURL = loginPage.getLoginPageURL();</span>
+<span class="nc" id="L42">        registerPage = loginPage.clickToHereLink();</span>
+<span class="nc" id="L43">        Assert.assertTrue(registerPage.isRegisterPageDisplay(&quot;emailid&quot;));</span>
+<span class="nc" id="L44">        registerPage.inputToEmailTextbox(email, &quot;emailid&quot;);</span>
+<span class="nc" id="L45">        registerPage.clickToSubmitButton(&quot;btnLogin&quot;);</span>
+<span class="nc" id="L46">        userIDInfo = registerPage.getUserIDInfo();</span>
+<span class="nc" id="L47">        passwordInfo = registerPage.getPasswordInfo();</span>
+<span class="nc" id="L48">    }</span>
+
+    @Test
+    public void TC02_LoginIntoSystem() {
+<span class="nc" id="L52">        loginPage = registerPage.openLoginURL(loginPageURL);</span>
+<span class="nc" id="L53">        Assert.assertTrue(loginPage.isLoginFromDisplay(&quot;btnLogin&quot;));</span>
+<span class="nc" id="L54">        loginPage.inputToUserIDTextbox(userIDInfo,&quot;uid&quot;);</span>
+<span class="nc" id="L55">        loginPage.inputToPasswordTextbox(passwordInfo,&quot;password&quot;);</span>
+<span class="nc" id="L56">        homePage = loginPage.clickToLoginButton(&quot;btnLogin&quot;);</span>
+<span class="nc" id="L57">        Assert.assertTrue(homePage.isWelcomeMessageDisplay());</span>
+<span class="nc" id="L58">        Assert.assertTrue(homePage.isUserIDDisplay(userIDInfo));</span>
+<span class="nc" id="L59">        homePage.clickToLogoutTextArea();</span>
+<span class="nc" id="L60">        homePage.waitForSuccessAlertPresence();</span>
+<span class="nc" id="L61">        loginPage = homePage.acceptLogoutSuccessAlert();</span>
+<span class="nc" id="L62">        Assert.assertTrue(loginPage.isLoginFromDisplay(&quot;btnLogin&quot;));</span>
+<span class="nc" id="L63">    }</span>
+
+    @AfterClass
+    public void afterClass() {
+<span class="nc" id="L67">        driver.quit();</span>
+<span class="nc" id="L68">    }</span>
+
+    public int randomNumber() {
+<span class="nc" id="L71">        Random rand  = new Random();</span>
+<span class="nc" id="L72">        return rand.nextInt(999999);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
